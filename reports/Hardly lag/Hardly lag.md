@@ -10,14 +10,14 @@
 ### 实验调查
 #### 华为视频-华为视频播放窗口最大化(凤凰网里面播放视频，点击视频内横竖屏切换)
 ##### 检测视频
-<video src="1.mp4"></video>
+<video src="1.mp4" controls="controls"></video>
 
 ##### 检测结论
 未发现明显卡顿现象, 整体观感非常流畅
 
 #### 新浪新闻首页向下滑动
 ##### 检测视频
-<video src="2.mp4"></video>
+<video src="2.mp4" controls="controls"></video>
 
 ##### 检测结论
 有些许轻微的卡顿, 以及资源的加载存在滞后的现象
@@ -158,14 +158,14 @@ struct Index {
 - png图片, 大小与华为官网基本保持一致
 
 ###### 模拟视频
-<video src="2_1.mp4"></video>
+<video src="2_1.mp4" controls="controls"></video>
 
 ###### 模拟结论
 未发现明显卡顿,整体运行十分流畅
 
 #### 华为商城点击搜索结果页转场
 ##### 检测视频
-<video src="3.mp4"></video>
+<video src="3.mp4" controls="controls"></video>
 
 ##### 检测结论
 存在明显的转场停顿, 用户点开界面后需要等待加载几秒才能看见界面
