@@ -1,12 +1,26 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\33162\\.ohos\\config\\default_vulkan_avAlBYbBMw91XSKCaH1tN6qwT7u7JgjTlIqtRIF_4oc=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001B78E3C8546B3BFE2C0B6969B08A61428301C56A19DE7A5AF326D6D2A556A8E2C1634DAB69A5B367",
+          "profile": "C:\\Users\\33162\\.ohos\\config\\default_vulkan_avAlBYbBMw91XSKCaH1tN6qwT7u7JgjTlIqtRIF_4oc=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\33162\\.ohos\\config\\default_vulkan_avAlBYbBMw91XSKCaH1tN6qwT7u7JgjTlIqtRIF_4oc=.p12",
+          "storePassword": "0000001B17DABEB14E09CA68AFBD7473D4953F177A27FF004A730280443A06F5304D1B18A3437FF70DF13F"
+        }
+      }
+    ],
     "products": [
       {
         "name": "default",
         "signingConfig": "default",
         "targetSdkVersion": "6.0.0(20)",
-        "compatibleSdkVersion": "6.0.0(20)",
+        "compatibleSdkVersion": "5.0.5(17)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
           "strictMode": {

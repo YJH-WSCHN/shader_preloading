@@ -1,3 +1,5 @@
+import router from '@ohos.router';
+
 @Component
 export struct ProductCard {
   @Prop index: number;
@@ -19,5 +21,11 @@ export struct ProductCard {
     .backgroundColor(Color.White)
     .borderRadius(12)
     .clip(true)
+    .onClick(() => {
+      router.push({
+        url: 'pages/Product',
+        params: { imgIndex: (this.index % 200) + 1 }
+      });
+    })
   }
 }
