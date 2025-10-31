@@ -516,6 +516,11 @@ struct Index {
 </ul>
 <h6 id="%E6%A8%A1%E6%8B%9F%E8%A7%86%E9%A2%91">模拟视频</h6>
 <p><video src="2_1.mp4" controls="controls"></video></p>
+<h6 id="%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95">性能测试</h6>
+<p><img src="2_1.png" alt=""></p>
+<ul>
+<li><strong>功耗</strong>: 一般稳定在<code>160-170mh</code>之间</li>
+</ul>
 <h6 id="%E6%A8%A1%E6%8B%9F%E7%BB%93%E8%AE%BA">模拟结论</h6>
 <p>未发现明显卡顿,整体运行十分流畅</p>
 <h4 id="%E5%8D%8E%E4%B8%BA%E5%95%86%E5%9F%8E%E7%82%B9%E5%87%BB%E6%90%9C%E7%B4%A2%E7%BB%93%E6%9E%9C%E9%A1%B5%E8%BD%AC%E5%9C%BA">华为商城点击搜索结果页转场</h4>
@@ -523,10 +528,96 @@ struct Index {
 <p><video src="3.mp4" controls="controls"></video></p>
 <h5 id="%E6%A3%80%E6%B5%8B%E7%BB%93%E8%AE%BA">检测结论</h5>
 <p>存在明显的转场停顿, 用户点开界面后需要等待加载几秒才能看见界面</p>
+<h5 id="%E6%A8%A1%E6%8B%9F%E9%A1%B9%E7%9B%AE">模拟项目</h5>
+<ul>
+<li>沿用<a href="#%E6%96%B0%E6%B5%AA%E6%96%B0%E9%97%BB%E9%A6%96%E9%A1%B5%E5%90%91%E4%B8%8B%E6%BB%91%E5%8A%A8">2</a>项目, 在之前项目的基础上增加新功能</li>
+</ul>
+<h6 id="%E6%96%B0%E5%A2%9E%E4%BB%A3%E7%A0%81">新增代码</h6>
+<p><strong>转场页面</strong>: <code>main\ets\pages\Product.ets</code></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span>  router  <span class="hljs-keyword">from</span> <span class="hljs-string">'@ohos.router'</span>;
+
+<span class="hljs-keyword">interface</span> RouterParams {
+  imgIndex: <span class="hljs-built_in">number</span>;
+}
+
+<span class="hljs-meta">@Entry</span>
+<span class="hljs-meta">@Component</span>
+struct Product {
+  <span class="hljs-keyword">private</span> imgIndex: <span class="hljs-built_in">number</span> = (router.getParams() <span class="hljs-keyword">as</span> RouterParams).imgIndex;
+
+  build() {
+    Column() {
+      Image($r(<span class="hljs-string">`app.media.<span class="hljs-subst">${<span class="hljs-keyword">this</span>.imgIndex}</span>`</span>))
+        .width(<span class="hljs-string">'100%'</span>)
+        .height(<span class="hljs-string">'100%'</span>)
+        .objectFit(ImageFit.Contain)
+        .backgroundColor(<span class="hljs-string">'#000'</span>)
+        .onClick(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> router.back())
+    }
+    .width(<span class="hljs-string">'100%'</span>)
+    .height(<span class="hljs-string">'100%'</span>)
+    .backgroundColor(<span class="hljs-string">'#000'</span>)
+  }
+}
+</div></code></pre>
+<h6 id="%E6%94%B9%E5%8A%A8%E4%BB%A3%E7%A0%81">改动代码</h6>
+<p><strong>选项卡</strong>: <code>main/ets/components/ProductCard.ets</code></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> router <span class="hljs-keyword">from</span> <span class="hljs-string">'@ohos.router'</span>;
+
+<span class="hljs-meta">@Component</span>
+<span class="hljs-keyword">export</span> struct ProductCard {
+  <span class="hljs-meta">@Prop</span> index: <span class="hljs-built_in">number</span>;
+
+  build() {
+    Column() {
+      Image($r(<span class="hljs-string">`app.media.<span class="hljs-subst">${(<span class="hljs-keyword">this</span>.index % <span class="hljs-number">200</span>) + <span class="hljs-number">1</span>}</span>`</span>))
+        .width(<span class="hljs-string">'100%'</span>)
+        .aspectRatio(<span class="hljs-number">1</span>)
+        .objectFit(ImageFit.Cover)
+        .borderRadius(<span class="hljs-number">8</span>)
+
+      Text(<span class="hljs-string">`商品 <span class="hljs-subst">${<span class="hljs-keyword">this</span>.index + <span class="hljs-number">1</span>}</span>`</span>)
+        .fontSize(<span class="hljs-number">14</span>)
+        .width(<span class="hljs-string">'100%'</span>)
+        .padding(<span class="hljs-number">4</span>)
+    }
+    .width(<span class="hljs-string">'100%'</span>)
+    .backgroundColor(Color.White)
+    .borderRadius(<span class="hljs-number">12</span>)
+    .clip(<span class="hljs-literal">true</span>)
+    <span class="hljs-comment">//新增代码部分，点击转场</span>
+    .onClick(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+      router.push({
+        url: <span class="hljs-string">'pages/Product'</span>,
+        params: { imgIndex: (<span class="hljs-keyword">this</span>.index % <span class="hljs-number">200</span>) + <span class="hljs-number">1</span> }
+      });
+    })
+  }
+}
+</div></code></pre>
+<h6 id="%E7%B4%A0%E6%9D%90%E4%BD%BF%E7%94%A8">素材使用</h6>
+<ul>
+<li>同 <a href="#%E6%96%B0%E6%B5%AA%E6%96%B0%E9%97%BB%E9%A6%96%E9%A1%B5%E5%90%91%E4%B8%8B%E6%BB%91%E5%8A%A8">2</a></li>
+</ul>
+<h6 id="%E6%A8%A1%E6%8B%9F%E8%A7%86%E9%A2%91">模拟视频</h6>
+<p><video src="3_1.mp4" controls="controls"></video></p>
+<h6 id="%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95">性能测试</h6>
+<p><img src="3_1.png" alt=""></p>
+<ul>
+<li><strong>功耗</strong>: 一般稳定在<code>160-170mh</code>之间</li>
+<li><strong>FPS</strong>: 转场时一般在<code>60</code>, 有时会到<code>90</code></li>
+</ul>
+<h6 id="%E6%A8%A1%E6%8B%9F%E7%BB%93%E8%AE%BA">模拟结论</h6>
+<p>未发现明显卡顿,整体运行十分流畅</p>
 <h3 id="%E5%AE%9E%E9%AA%8C%E7%BB%93%E8%AE%BA">实验结论</h3>
 <ul>
 <li>问题1 尚未发现</li>
 <li>问题2 经模拟后未能模拟出相似问题
+<ul>
+<li>high-level program未能发现问题</li>
+</ul>
+</li>
+<li>问题3 经模拟后未能模拟出相似问题
 <ul>
 <li>high-level program未能发现问题</li>
 </ul>
