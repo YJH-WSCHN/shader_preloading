@@ -59,3 +59,7 @@ local-config.json
 # Temporary files
 *.tmp
 *.temp
+
+# Rust Vulkan
+.idea
+rust_vulkan/target
