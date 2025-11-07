@@ -1,0 +1,33 @@
+[package]
+name = "rust_vulkan"
+version = "0.1.0"
+edition = "2024"
+authors = ["Han_feng"]
+
+[lib]
+name = "rust_vulkan"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# Vulkan dependenices
+# ash = "0.38.0"
+# ash-window = "0.13.0"
+raw-window-handle = "0.6.2"
+
+# Test #1016
+ash = {git = "https://github.com/ash-rs/ash.git", branch = "ohos-surface"}
+ash-window = {git = "https://github.com/ash-rs/ash.git", branch = "ohos-surface"}
+
+# Tool dependenices
+cfg-if = "1.0.4"
+
+# Logger dependencies
+log = "0.4.28"
+env_logger = "0.11.8"
+
+[build-dependencies]
+shaderc = "0.10.1"
+cbindgen = "0.29.2"
+
+[dev-dependencies]
+winit = "0.30.12"

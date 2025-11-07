@@ -62,4 +62,20 @@ local-config.json
 
 # Rust Vulkan
 .idea
-rust_vulkan/target
+rust_vulkan/target/*
+rust_vulkan/cargo.lock
+rust_vulkan/log.txt
+!/rust_vulkan/target/aarch64-unknown-linux-ohos
+/rust_vulkan/target/aarch64-unknown-linux-ohos/*
+
+# Debug
+!/rust_vulkan/target/aarch64-unknown-linux-ohos/debug
+/rust_vulkan/target/aarch64-unknown-linux-ohos/debug/*
+!/rust_vulkan/target/aarch64-unknown-linux-ohos/debug/librust_vulkan.so
+!/rust_vulkan/target/aarch64-unknown-linux-ohos/debug/rust_vulkan_lib.h
+
+# Release
+!/rust_vulkan/target/aarch64-unknown-linux-ohos/release
+/rust_vulkan/target/aarch64-unknown-linux-ohos/release/*
+!/rust_vulkan/target/aarch64-unknown-linux-ohos/release/librust_vulkan.so
+!/rust_vulkan/target/aarch64-unknown-linux-ohos/release/rust_vulkan_lib.h
