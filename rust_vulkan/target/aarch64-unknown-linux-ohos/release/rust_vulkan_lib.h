@@ -15,7 +15,7 @@ typedef enum Status_code {
 
 typedef struct Vulkan_application Vulkan_application;
 
-void log_init(const char *log_file, unsigned int log_level);
+enum Status_code log_init(const char *log_file, unsigned int log_level);
 
 enum Status_code get_vulkan_application(void *window_handle,
                                         unsigned int width,

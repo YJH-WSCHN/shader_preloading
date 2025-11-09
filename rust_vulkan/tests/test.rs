@@ -13,8 +13,20 @@ mod test_lib;
 fn test() {
     #[cfg(debug_assertions)]
     {
-        let file = c"log.txt";
+        let file = c"log/log.txt";
         log_init(file.as_ptr(), 3 as c_uint);
+    }
+
+    let mut test_application = test_lib::Test_application::default();
+    test_application.run();
+}
+
+#[test]
+#[ignore]
+fn stdout_test(){
+    #[cfg(debug_assertions)]
+    {
+        log_init(std::ptr::null(), 3 as c_uint);
     }
 
     let mut test_application = test_lib::Test_application::default();
