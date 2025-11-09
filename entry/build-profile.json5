@@ -1,12 +1,23 @@
 {
   "apiType": "stageMode",
   "buildOption": {
+    "externalNativeOptions": {
+      "path": "./src/main/cpp/CMakeLists.txt",
+      "arguments": "--debug-output",
+      "cppFlags": "-v",
+      "abiFilters": ["arm64-v8a"],
+
+    },
+    "nativeLib": {
+      "filter": {}
+    },
     "resOptions": {
       "copyCodeResource": {
         "enable": false
       }
     }
   },
+
   "buildOptionSet": [
     {
       "name": "release",
