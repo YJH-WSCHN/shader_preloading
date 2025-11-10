@@ -11,11 +11,22 @@ use winit::platform::windows::EventLoopBuilderExtWindows;
 use winit::window::{WindowAttributes, WindowId};
 use rust_vulkan::{Vulkan_application, Window};
 
+cfg_if::cfg_if! {
+    if #[cfg(debug_assertions)] {
+        use rust_vulkan::Logger;
+    }
+}
+
 //Structs
 #[derive(Default)]
 pub struct Test_application{
     window: Option<winit::window::Window>,
     application: Option<Vulkan_application>,
+}
+
+#[cfg(debug_assertions)]
+pub struct Test_logger{
+    pub logger: Logger,
 }
 
 //Impls
@@ -59,5 +70,29 @@ impl Test_application{
 
         let event_loop = event_loop_builder.build().unwrap();
         event_loop.run_app(self).unwrap();
+    }
+}
+
+#[cfg(debug_assertions)]
+impl Test_logger {
+    pub fn new() -> Self {
+        Test_logger{
+            logger: Logger::new(100)
+        }
+    }
+
+    pub fn run(self) -> std::thread::JoinHandle<()> {
+        std::thread::spawn(move || {
+            let mut test_logger = self;
+
+            loop{
+                if let Some(len) = test_logger.logger.get_last_message_length(){
+                    println!("Length: {}, Message: {:?}", len, String::from_utf8(test_logger.logger.get_last_message().unwrap()));
+                }
+                else{
+                    std::thread::sleep(std::time::Duration::from_millis(500));
+                }
+            }
+        })
     }
 }

@@ -145,7 +145,7 @@ impl Vulkan_application {
 
         let sync_objects = Sync_objects::new(&device, swap_chain.images.len())?;
 
-        save_log!(Log_level::GENERAL, Level::Info, "Successfully created vulkan application");
+        save_log!(Log_level::General, Level::Info, "Successfully created vulkan application");
         
         Ok(Vulkan_application{
             vulkan_entry, instance, window, surface, physical_device,
@@ -248,7 +248,7 @@ impl Vulkan_application {
 
         let instance = unsafe { vulkan_entry.create_instance(&create_info, None)? };
 
-        save_log!(Log_level::GENERAL, Level::Info, "Successfully created instance");
+        save_log!(Log_level::General, Level::Info, "Successfully created instance");
 
         Ok(instance)
     }
@@ -270,7 +270,7 @@ impl Vulkan_application {
                     Some((physical_device, indices, properties))
                 }
                 else {
-                    save_log!(Log_level::GENERAL, Level::Info, "Device {} skipped", properties.device_name.as_ptr().to_str());
+                    save_log!(Log_level::General, Level::Info, "Device {} skipped", properties.device_name.as_ptr().to_str());
                     None
                 }
             })
@@ -282,12 +282,12 @@ impl Vulkan_application {
                 _ => 4
             })
             .ok_or_else(|| {
-                save_log!(Log_level::GENERAL, Level::Error, "Failed to find suitable physical device");
+                save_log!(Log_level::General, Level::Error, "Failed to find suitable physical device");
 
                 Status_code::Failure
             })?};
 
-        save_log!(Log_level::GENERAL, Level::Info, "Choose physical device: {}", device_pack.2.device_name.as_ptr().to_str());
+        save_log!(Log_level::General, Level::Info, "Choose physical device: {}", device_pack.2.device_name.as_ptr().to_str());
 
         Ok((device_pack.0, device_pack.1))
     }
@@ -306,9 +306,9 @@ impl Vulkan_application {
             .enabled_extension_names(&DEVICE_EXTENSIONS);
 
         let device = unsafe { instance.create_device(physical_device, &create_info, None)? };
-        save_log!(Log_level::GENERAL, Level::Info, "Successfully created device");
+        save_log!(Log_level::General, Level::Info, "Successfully created device");
         let queues = Queues::new(&device, &indices);
-        save_log!(Log_level::GENERAL, Level::Info, "Successfully get queues");
+        save_log!(Log_level::General, Level::Info, "Successfully get queues");
 
         Ok((device, queues))
     }
@@ -346,7 +346,7 @@ unsafe extern "system" fn debug_callback(
     p_callback_data: *const vk::DebugUtilsMessengerCallbackDataEXT,
     _user_data: *mut c_void) -> vk::Bool32
 {
-    save_log!(Log_level::VULKAN, match message_severity {
+    save_log!(Log_level::Vulkan, match message_severity {
         vk::DebugUtilsMessageSeverityFlagsEXT::ERROR => Level::Error,
         vk::DebugUtilsMessageSeverityFlagsEXT::WARNING => Level::Warn,
         vk::DebugUtilsMessageSeverityFlagsEXT::INFO => Level::Info,
@@ -363,7 +363,7 @@ impl Debug_messenger{
         let instance = ash::ext::debug_utils::Instance::new(vulkan_entry, instance);
         let messenger = unsafe { instance.create_debug_utils_messenger(&Self::populate_debug_info(), None)? };
 
-        save_log!(Log_level::GENERAL, Level::Info, "Successfully created debug messenger");
+        save_log!(Log_level::General, Level::Info, "Successfully created debug messenger");
 
         Ok(Debug_messenger{
             instance, messenger
@@ -389,7 +389,7 @@ impl Window{
         Ok(Window{
             display_handle: raw_window_handle::OhosDisplayHandle::new().into(),
             window_handle: raw_window_handle::OhosNdkWindowHandle::new(NonNull::new(window_handle).ok_or_else(|| {
-            save_log!(Log_level::GENERAL, Level::Error, "Failed to create window handle");
+            save_log!(Log_level::General, Level::Error, "Failed to create window handle");
             Status_code::Failure
             })?).into(),
             width, height
@@ -402,7 +402,7 @@ impl Surface {
         let surface = unsafe { ash_window::create_surface(vulkan_entry, instance, window.display_handle, window.window_handle, None)? };
         let instance = ash::khr::surface::Instance::new(vulkan_entry, instance);
 
-        save_log!(Log_level::GENERAL, Level::Info, "Successfully created surface");
+        save_log!(Log_level::General, Level::Info, "Successfully created surface");
 
         Ok(Surface{
             surface, instance
@@ -438,10 +438,10 @@ impl Queue_family_indices{
         }
         else{
             if indices.graphics_family.is_none(){
-                save_log!(Log_level::GENERAL, Level::Info, "Failed to find graphics queue family indices");
+                save_log!(Log_level::General, Level::Info, "Failed to find graphics queue family indices");
             }
             if indices.present_family.is_none(){
-                save_log!(Log_level::GENERAL, Level::Info, "Failed to find present queue family indices");
+                save_log!(Log_level::General, Level::Info, "Failed to find present queue family indices");
             }
 
             Err(Status_code::Failure)
@@ -494,7 +494,7 @@ impl Swap_chain_supports{
             }
         };
 
-        save_log!(Log_level::GENERAL, Level::Info, "Successfully queried swap chain support");
+        save_log!(Log_level::General, Level::Info, "Successfully queried swap chain support");
 
         Ok(supports)
     }
@@ -543,11 +543,11 @@ impl Swap_chain{
         let swap_chain_device = ash::khr::swapchain::Device::new(instance, device);
         let (swap_chain, surface_format, extent) = Self::create_swap_chain(&swap_chain_device, physical_device, indices, surface, window)?;
 
-        save_log!(Log_level::GENERAL, Level::Info, "Successfully create swap chain");
+        save_log!(Log_level::General, Level::Info, "Successfully create swap chain");
 
         let render_pass = Self::create_render_pass(device, surface_format.format)?;
 
-        save_log!(Log_level::GENERAL, Level::Info, "Successfully created render pass");
+        save_log!(Log_level::General, Level::Info, "Successfully created render pass");
 
         let mut result = Swap_chain{
             device: swap_chain_device, swap_chain, surface_format, extent, render_pass,
@@ -679,7 +679,7 @@ impl Swap_chain{
             }).collect::<Result<_, Status_code>>()?;
         }
 
-        save_log!(Log_level::GENERAL, Level::Info, "Successfully update swap chain images");
+        save_log!(Log_level::General, Level::Info, "Successfully update swap chain images");
 
         Ok(())
     }
@@ -694,7 +694,7 @@ impl Swap_chain{
 
         self.update_images(device)?;
 
-        save_log!(Log_level::GENERAL, Level::Info, "Successfully recreate swap chain");
+        save_log!(Log_level::General, Level::Info, "Successfully recreate swap chain");
 
         Ok(())
     }
@@ -812,7 +812,7 @@ impl Graphics_pipelines {
 
         let pipelines = unsafe { device.create_graphics_pipelines(vk::PipelineCache::null(), &create_infos, None).map_err(|(_, err)| err)? };
 
-        save_log!(Log_level::GENERAL, Level::Info, "Successfully created graphics pipeline");
+        save_log!(Log_level::General, Level::Info, "Successfully created graphics pipeline");
 
         unsafe {
             device.destroy_shader_module(vertex_shader, None);
@@ -864,7 +864,7 @@ impl Command_context{
 
         let draw_buffers = unsafe { device.allocate_command_buffers(&draw_buffers_alloc_info)? };
 
-        save_log!(Log_level::GENERAL, Level::Info, "Successfully created command context");
+        save_log!(Log_level::General, Level::Info, "Successfully created command context");
 
         Ok(Command_context{
             pool, draw_buffers

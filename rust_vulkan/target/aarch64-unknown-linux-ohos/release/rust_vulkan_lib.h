@@ -13,9 +13,21 @@ typedef enum Status_code {
   Failure = 1,
 } Status_code;
 
+typedef struct Logger Logger;
+
 typedef struct Vulkan_application Vulkan_application;
 
-enum Status_code log_init(const char *log_file, unsigned int log_level);
+enum Status_code log_init(const char *log_file, unsigned long long log_level);
+
+enum Status_code get_logger(unsigned long long log_level,
+                            unsigned long long logger_size,
+                            struct Logger **logger);
+
+enum Status_code get_last_message_length(const struct Logger *logger, unsigned long long *length);
+
+enum Status_code get_last_message(struct Logger *logger, char *data);
+
+void destroy_logger(struct Logger *logger);
 
 enum Status_code get_vulkan_application(void *window_handle,
                                         unsigned int width,
